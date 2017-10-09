@@ -523,6 +523,46 @@ public class FTP_Client_Frame extends JFrame {
 				linkButtonActionPerformed(evt);
 			}
 		});
+		jPanel4.add(linkButton);
+		jPanel1.add(jPanel4);
+		
+		gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.weightx = 1.0;
+		getContentPane().add(jPanel1, gridBagConstraints);
+		
+		jSplitPane2.setBorder(null);
+		jSplitPane2.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		jSplitPane2.setResizeWeight(1.0);
+		jSplitPane2.setContinuousLayout(true);
+		
+		/*jSplitPane1.setDividerLocation(400);
+		jSplitPane1.setDividerSize(10);
+		jSplitPane1.setOneTouchExpandable(true);
+		jSplitPane1.setRightComponent(ftpPanel);
+		jSplitPane1.setRightComponent(localPanel);*/
+		
+		jSplitPane2.setLeftComponent(jSplitPane1);
+		
+		jTabbedPane1.setMinimumSize(new Dimension(40, 170));
+		
+		jTabbedPane1.addTab("队列", queuePanel);
+		jTabbedPane1.addTab("已上传", uploadPanel);
+		jTabbedPane1.addTab("已下载", downloadPanel);
+		jSplitPane2.setBottomComponent(jTabbedPane1);
+		
+		gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 1;
+		gridBagConstraints.fill = GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 1.0;
+		getContentPane().add(jSplitPane2, gridBagConstraints);
+		
+		fileMenu.setMnemonic('f');
+		fileMenu.setText("文件(F)");
 	}
 
 	private void linkButtonActionPerformed(ActionEvent evt) {
@@ -534,6 +574,33 @@ public class FTP_Client_Frame extends JFrame {
 				return;
 			}
 			String portStr = portTextField.getText();
+			if(portStr == null)
+			{
+				portStr = "21";
+			}
+			int port = Integer.parseInt(portStr.trim());
+			userStr = userTextField.getText();
+			if(userStr.equals("") && checkBoxes.isSelected())
+			{
+				userStr = "Anonymous";
+			}
+			else
+			{
+				userStr = userStr.trim();
+			}
+			passStr = passField.getText();
+			if(passStr.equals("") && checkBoxes.isSelected())
+			{
+				passStr = "331";
+			}
+			else
+			{
+				passStr = passStr.trim();
+			}
+			cutLinkButton.doClick();
+			ftpClient = new  FTPClient();
+			
+			/*还没写完。。。。。。。。。。*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
