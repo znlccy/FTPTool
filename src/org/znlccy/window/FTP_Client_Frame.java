@@ -14,6 +14,7 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -38,6 +39,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -46,6 +48,8 @@ import org.znlccy.action.LinkToAction;
 import org.znlccy.extClass.FTPClient;
 import org.znlccy.panel.ftp.FTPPanel;
 import org.znlccy.panel.local.LocalPanel;
+import org.znlccy.panel.manager.FTPLinkDialog;
+import org.znlccy.panel.manager.FTPSiteDialog;
 import org.znlccy.panel.queue.DownloadPanel;
 import org.znlccy.panel.queue.QueuePanel;
 import org.znlccy.panel.queue.UploadPanel;
@@ -435,7 +439,7 @@ public class FTP_Client_Frame extends JFrame {
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
 		
 		/*设置标签1的相关属性*/
-		jLabel1.setText("主机地址:");
+		jLabel1.setText("主机地址：");
 		jPanel4.add(jLabel1);
 		
 		/*设置服务器文本框的属性*/
@@ -450,7 +454,7 @@ public class FTP_Client_Frame extends JFrame {
 		jPanel4.add(serverTextField);
 		
 		/*设置标签2的相关属性*/
-		jLabel2.setText("用户名:");
+		jLabel2.setText("用户名：");
 		jPanel4.add(jLabel2);
 		
 		userTextField.setText("admins");
@@ -466,7 +470,7 @@ public class FTP_Client_Frame extends JFrame {
 		jPanel4.add(userTextField);
 		
 		/*设置标签3的相关属性*/
-		jLabel3.setText("密码:");
+		jLabel3.setText("密码：");
 		jPanel4.add(jLabel3);
 		
 		passField.setText("admins");
@@ -482,7 +486,7 @@ public class FTP_Client_Frame extends JFrame {
 		jPanel4.add(passField);
 		
 		/*设置标签6的相关属性*/
-		jLabel6.setText("端口:");
+		jLabel6.setText("端口：");
 		jPanel4.add(jLabel6);
 		
 		portTextField.setText("21");
@@ -563,6 +567,49 @@ public class FTP_Client_Frame extends JFrame {
 		
 		fileMenu.setMnemonic('f');
 		fileMenu.setText("文件(F)");
+		
+		ftpManageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_MASK));
+		ftpManageMenuItem.setText("FTP站点管理(S)");
+		ftpManageMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				System.err.println("action");
+				FTPSiteDialog dialog = new FTPSiteDialog(FTP_Client_Frame.this);
+				dialog.setVisible(true);
+			}
+		});
+		fileMenu.add(ftpManageMenuItem);
+		fileMenu.add(jSeparator1);
+		
+		linkToMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_MASK));
+		linkToMenuItem.setText("连接到...(C)");
+		linkToMenuItem.setAction(LINK_TO_ACTION);
+		fileMenu.add(linkToMenuItem);
+		
+		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,InputEvent.CTRL_MASK));
+		cutMenuItem.setText("断开(Z)");
+		cutMenuItem.setAction(CUT_LINK_ACTION);
+		fileMenu.add(cutMenuItem);
+		fileMenu.add(jSeparator2);
+		
+		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,InputEvent.CTRL_MASK));
+		exitMenuItem.setText("退出(X)");
+		exitMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+		});
+		fileMenu.add(exitMenuItem);
+		
+		MenuBar.add(fileMenu);
+		
+		
+		setJMenuBar(MenuBar);
 	}
 
 	private void linkButtonActionPerformed(ActionEvent evt) {
